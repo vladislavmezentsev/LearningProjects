@@ -1,17 +1,18 @@
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-
 import com.skillbox.airport.Aircraft;
 import com.skillbox.airport.Airport;
 import com.skillbox.airport.Flight;
 import com.skillbox.airport.Flight.Type;
 import com.skillbox.airport.Terminal;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 @DisplayName("Поиск рейсов")
 public class TestFindPlanesLeavingInTheNextTwoHours {
@@ -23,9 +24,9 @@ public class TestFindPlanesLeavingInTheNextTwoHours {
     private static final String[] companyCodes = new String[]{"SU", "AA", "AR", "AF", "B2", "FV"};
 
     private static String stringify(List<Flight> flights) {
-        return "[" + String.join("\n",
+        return "[" + String.join(", ",
                 flights.stream()
-                        .map(f->String.format("<%s %s %s %s>", f.getType(), f.getCode(), f.getDate(), f.getAircraft()))
+                        .map(Flight::toString)
                         .toArray(String[]::new)) + "]";
     }
 
@@ -42,8 +43,6 @@ public class TestFindPlanesLeavingInTheNextTwoHours {
                     terminal.addFlight(generateArrivalFlight(generateDate(HOUR)));
                     terminal.addFlight(generateArrivalFlight(generateDate(HOUR_AND_HALF)));
                     terminal.addFlight(generateArrivalFlight(generateDate(THREE_HOURS)));
-                    terminal.addFlight(generateArrivalFlight(generateDate(-THREE_HOURS)));
-                    terminal.addFlight(generateDepartureFlight(generateDate(-THREE_HOURS)));
 
                     expectedFlights.add(expectedFlight1);
                     expectedFlights.add(expectedFlight2);
