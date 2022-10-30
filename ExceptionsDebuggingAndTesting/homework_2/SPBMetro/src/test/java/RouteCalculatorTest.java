@@ -66,4 +66,30 @@ public class RouteCalculatorTest extends TestCase {
         assertEquals(expected, actual);
     }
 
+    public void testGetRouteOnTheLine() {
+        RouteCalculator routeCalculator = new RouteCalculator(metroMap);
+        List<Station> actual = routeCalculator.getShortestRoute(metroMap.getStation("Goldshire"),
+                metroMap.getStation("Stormwind"));
+        List<Station> expected = List.of(metroMap.getStation("Goldshire"), metroMap.getStation("Stormwind"));
+        assertEquals(expected, actual);
+    }
+
+    public void testGetRouteWithOneConnection() {
+        RouteCalculator routeCalculator = new RouteCalculator(metroMap);
+        List<Station> actual = routeCalculator.getShortestRoute(metroMap.getStation("Goldshire"),
+                metroMap.getStation("Ironforge"));
+        List<Station> expected = List.of(metroMap.getStation("Goldshire"), metroMap.getStation("Stormwind"),
+                metroMap.getStation("Ironforge"));
+        assertEquals(expected, actual);
+    }
+
+    public void testGetRouteWithTwoConnections() {
+        RouteCalculator routeCalculator = new RouteCalculator(metroMap);
+        List<Station> actual = routeCalculator.getShortestRoute(metroMap.getStation("Goldshire"),
+                metroMap.getStation("Silvermoon"));
+        List<Station> expected = List.of(metroMap.getStation("Goldshire"), metroMap.getStation("Stormwind"),
+                metroMap.getStation("Ironforge"), metroMap.getStation("Lordaeron"),
+                metroMap.getStation("Gilneas"), metroMap.getStation("Silvermoon"));
+        assertEquals(expected, actual);
+    }
 }
