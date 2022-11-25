@@ -67,7 +67,6 @@ public class DataCollector {
                 String depth = String.valueOf(stationJsonObject.get("depth_meters"));
                 listStations.get(stationName).setDepth(depth);
             }
-
         }
     }
 

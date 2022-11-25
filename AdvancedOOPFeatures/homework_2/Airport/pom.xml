@@ -76,13 +76,6 @@
             <version>${puppycrawl.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.skillbox</groupId>
-            <artifactId>airport</artifactId>
-            <version>1.0.1</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/airport-1.0.1.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.8.2</version>
