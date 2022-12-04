@@ -19,7 +19,6 @@ public class Course {
 
     private String description;
 
-    //    @Column(name = "teacher_id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Teacher teacher;
 

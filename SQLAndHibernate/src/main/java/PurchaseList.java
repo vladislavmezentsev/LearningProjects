@@ -1,37 +1,49 @@
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "Purchaselist")
 public class PurchaseList {
-    @Column(name = "student_name")
-    private String studentName;
 
-    @Column(name = "course_name")
-    private String courseName;
+    @EmbeddedId
+    private PurchaseListKey id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_name", referencedColumnName = "name", insertable = false, updatable = false)
+    Student student;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_name", referencedColumnName = "name", insertable = false, updatable = false)
+    Course course;
 
     private int price;
 
     @Column(name = "subscription_date")
     private Date subscriptionDate;
 
-    public String getStudentName() {
-        return studentName;
+    public PurchaseListKey getId() {
+        return id;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setId(PurchaseListKey id) {
+        this.id = id;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public int getPrice() {
