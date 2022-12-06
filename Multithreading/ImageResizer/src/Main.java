@@ -1,5 +1,3 @@
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class Main {
@@ -24,7 +22,7 @@ public class Main {
             File[] coreFiles = new File[firstPart];
             System.arraycopy(files, 0, coreFiles, 0, firstPart);
             ImageResizer resizer = new ImageResizer(coreFiles, newWidth, dstFolder, start);
-            resizer.start();
+            new Thread(resizer).start();
         }
 
     }
