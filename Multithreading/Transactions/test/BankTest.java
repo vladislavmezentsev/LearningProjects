@@ -17,7 +17,7 @@ public class BankTest extends TestCase {
         bankAfter.setAccounts(accounts);
     }
 
-    public void testTransfer() {
+    public synchronized void testTransfer() {
         List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             threads.add(new Thread(() -> {
@@ -32,6 +32,8 @@ public class BankTest extends TestCase {
                 }
             }));
         }
+        threads.forEach(t -> t.start());
+
         long actual = bankAfter.getSumAllAccounts();
         long expected = bankBefore.getSumAllAccounts();
         assertEquals(expected, actual);
