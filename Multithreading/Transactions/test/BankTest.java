@@ -23,7 +23,7 @@ public class BankTest extends TestCase {
             threads.add(new Thread(() -> {
                 for (int j = 0; j <= 100; j++) {
                     try {
-                        bankBefore.transfer(String.valueOf((int) (Math.random() * 500)),
+                        bankAfter.transfer(String.valueOf((int) (Math.random() * 500)),
                                 String.valueOf((int) (Math.random() * 500)),
                                 (int) (Math.random() * 1_000_000));
                     } catch (Exception e) {
