@@ -36,7 +36,7 @@ public class Bank {
      * метод isFraud. Если возвращается true, то делается блокировка счетов (как – на ваше
      * усмотрение)
      */
-    public void transfer(String fromAccountNum, String toAccountNum, long amount) {
+    public synchronized void transfer(String fromAccountNum, String toAccountNum, long amount) {
         accounts.get(toAccountNum).setMoney(accounts.get(toAccountNum).getMoney() + amount);
         accounts.get(fromAccountNum).setMoney(accounts.get(fromAccountNum).getMoney() - amount);
         if (amount > 50000) {

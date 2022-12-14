@@ -17,7 +17,7 @@ public class BankTest extends TestCase {
         bankAfter.setAccounts(accounts);
     }
 
-    public synchronized void testTransfer() {
+    public void testTransfer() {
         List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             threads.add(new Thread(() -> {
