@@ -36,11 +36,8 @@ public class Bank {
      * метод isFraud. Если возвращается true, то делается блокировка счетов (как – на ваше
      * усмотрение)
      */
+
     public void transfer(String fromAccountNum, String toAccountNum, long amount) {
-        synchronized (accounts) {
-            accounts.get(toAccountNum).setMoney(accounts.get(toAccountNum).getMoney() + amount);
-            accounts.get(fromAccountNum).setMoney(accounts.get(fromAccountNum).getMoney() - amount);
-        }
         if (amount > 50000) {
             try {
                 if (isFraud(fromAccountNum, toAccountNum, amount)) {
@@ -52,6 +49,21 @@ public class Bank {
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
+            }
+        }
+        if (accounts.get(fromAccountNum).getAccNumber().compareTo(accounts.get(toAccountNum).getAccNumber()) < 0) {
+            synchronized (accounts.get(fromAccountNum)) {
+                synchronized (accounts.get(toAccountNum)) {
+                    accounts.get(toAccountNum).setMoney(accounts.get(toAccountNum).getMoney() + amount);
+                    accounts.get(fromAccountNum).setMoney(accounts.get(fromAccountNum).getMoney() - amount);
+                }
+            }
+        } else {
+            synchronized (accounts.get(fromAccountNum)) {
+                synchronized (accounts.get(toAccountNum)) {
+                    accounts.get(toAccountNum).setMoney(accounts.get(toAccountNum).getMoney() + amount);
+                    accounts.get(fromAccountNum).setMoney(accounts.get(fromAccountNum).getMoney() - amount);
+                }
             }
         }
     }
