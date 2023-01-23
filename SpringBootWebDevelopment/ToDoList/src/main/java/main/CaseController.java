@@ -17,7 +17,7 @@ public class CaseController {
     @Autowired
     private CaseRepository caseRepository;
 
-    @GetMapping("/")
+    @GetMapping("//")
     public List<Case> list() {
         Iterable<Case> caseIterable = caseRepository.findAll();
         ArrayList<Case> caseArrayList = new ArrayList<>();
@@ -27,7 +27,7 @@ public class CaseController {
         return caseArrayList;
     }
 
-    @PostMapping("/")
+    @PostMapping("//")
     public int add(Case newCase) {
         Case addedCase = caseRepository.save(newCase);
         return addedCase.getId();
@@ -52,7 +52,7 @@ public class CaseController {
         return new ResponseEntity(caseOptional, HttpStatus.OK);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("//")
     public void deleteCases() {
         caseRepository.deleteAll();
     }

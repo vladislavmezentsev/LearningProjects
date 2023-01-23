@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Case List</title>
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src="/js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+
+<h1>Список дел (<span th:text="${casesCount}">0</span>)</h1>
+<br><br>
+<div id="case-list">
+    <div th:each="case : ${cases}">
+        <a href="#" class="case-link" th:attr="data-id=${case.id}" th:text="${case.name}"></a>
+    </div>
+</div>
+</body>
+</html>
