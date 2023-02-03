@@ -74,4 +74,9 @@ public class RedisStorage {
         //ZCOUNT ONLINE_USERS
         return onlineUsers.count(Double.NEGATIVE_INFINITY, true, Double.POSITIVE_INFINITY, true);
     }
+
+    void deleteUser(int user_id) {
+        onlineUsers.remove(user_id);
+    }
+
 }

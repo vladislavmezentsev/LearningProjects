@@ -1,5 +1,7 @@
 package com.skillbox.redisdemo;
 
+import org.redisson.api.RScoredSortedSet;
+
 import java.util.Random;
 
 import static java.lang.System.out;
@@ -28,7 +30,6 @@ public class RedisTest {
     public static void main(String[] args) throws InterruptedException {
 
         RedisStorage redis = new RedisStorage();
-        Random random = new Random();
         boolean payedService = false;
         redis.init();
 
@@ -37,18 +38,21 @@ public class RedisTest {
             for (int uniqueUsers = 1; uniqueUsers < 21; uniqueUsers++) {
                 // Выполним 500 запросов
                 for (int request = 0; request <= RPS; request++) {
-                    int user_id = new Random().nextInt(USERS);
+                    int user_id = uniqueUsers;
                     redis.logPageVisit(user_id);
                     Thread.sleep(SLEEP);
                 }
                 redis.deleteOldEntries(DELETE_SECONDS_AGO);
 
-                int randomNum = random.nextInt((21 - 1) + 1) + 1;
+                int randomUser = new Random().nextInt((21 - 1) + 1) + 1;
                 if (uniqueUsers % 10 == 0) {
                     payedService = true;
-                    out.println("> Пользователь " + randomNum + " оплатил платную услугу");
-                    log(randomNum);
+                    redis.deleteUser(randomUser);
+                    redis.logPageVisit(randomUser);
+                    out.println("> Пользователь " + randomUser + " оплатил платную услугу");
+                    log(randomUser);
                 }
+                redis.deleteOldEntries(DELETE_SECONDS_AGO);
 
                 int usersOnline = uniqueUsers;
                 log(usersOnline);
