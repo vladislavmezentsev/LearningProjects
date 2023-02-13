@@ -13,43 +13,27 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class Loader {
-
     private static SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
     private static SimpleDateFormat visitDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
-    private static HashMap<Byte, WorkTime> voteStationWorkTimes = new HashMap<>();
-    private static HashMap<Voter, Byte> voterCounts = new HashMap<>();
+    private static HashMap<Integer, WorkTime> voteStationWorkTimes = new HashMap<>();
+    private static HashMap<Voter, Integer> voterCounts = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
-        String fileName = "res/data-18M.xml";
+        long startTime = System.currentTimeMillis();
+        String fileName = "res/data-1572M.xml";
 
-        long usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-
-        SAXParserFactory factory = SAXParserFactory.newInstance(); // Занимаемая память (SAX) - 26300816
-        SAXParser parser = factory.newSAXParser(); //Занимаемая память после изменения Integer на Byte - 25571136
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = factory.newSAXParser();
         XMLHandler handler = new XMLHandler();
         parser.parse(new File(fileName), handler);
-        handler.printDuplicatedVoters();
+        DBConnection.printVoterCounts();
 
-//        parseFile(fileName);
-//
-//        System.out.println("Voting station work times: "); // Занимаемая память (DOM) - 197881784
-//        for (Integer votingStation : voteStationWorkTimes.keySet()) {
-//            WorkTime workTime = voteStationWorkTimes.get(votingStation);
-//            System.out.println("\t" + votingStation + " - " + workTime);
-//        }
-//
-//        System.out.println("Duplicated voters: ");
-//        for (Voter voter : voterCounts.keySet()) {
-//            Integer count = voterCounts.get(voter);
-//            if (count > 1) {
-//                System.out.println("\t" + voter + " - " + count);
-//            }
-//        }
+        System.out.println("Duration:");
+        System.out.println(System.currentTimeMillis() - startTime);
 
-        usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() - usage;
-        System.out.println(usage);
     }
+
 
     private static void parseFile(String fileName) throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -71,8 +55,8 @@ public class Loader {
             Date birthDay = birthDayFormat.parse(attributes.getNamedItem("birthDay").getNodeValue());
 
             Voter voter = new Voter(name, birthDay);
-            Byte count = voterCounts.get(voter);
-            voterCounts.put(voter, (byte) (count == null ? 1 : count + 1));
+            Integer count = voterCounts.get(voter);
+            voterCounts.put(voter, count == null ? 1 : count + 1);
         }
     }
 
@@ -83,7 +67,7 @@ public class Loader {
             Node node = visits.item(i);
             NamedNodeMap attributes = node.getAttributes();
 
-            Byte station = Byte.parseByte(attributes.getNamedItem("station").getNodeValue());
+            Integer station = Integer.parseInt(attributes.getNamedItem("station").getNodeValue());
             Date time = visitDateFormat.parse(attributes.getNamedItem("time").getNodeValue());
             WorkTime workTime = voteStationWorkTimes.get(station);
             if (workTime == null) {
